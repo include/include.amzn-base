@@ -1,0 +1,14 @@
+---
+# AWS Credentials used to query Amazon API
+aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID'}}"
+aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY'}}"
+aws_region:     "{{ lookup('env', 'AWS_REGION'}}"
+
+# Default timezone/localtime is UTC
+amzn_base_timezone: Portugal
+
+# Default AMI user is ec2-user
+amzn_base_admin_username: frodo
+
+# Could be fetched from Amazon API
+amzn_base_admin_key: ServicesMasterKey.pem

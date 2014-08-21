@@ -1,0 +1,34 @@
+---
+- name: including OS specific variables
+  include_vars: '{{ ansible_os_family }}.yml'
+
+- include: RedHat.yml
+  when: ansible_os_family == "RedHat"
+
+- name: check for unsupported target operating system
+  fail:
+    msg: "The operating system of the target machine ({{ inventory_hostname }}) is not currently supported."
+  when: amzn_base_supported_os is not defined
+
+- name: setup the management user
+  user: name={{ amzn_base_admin_username }} comment="Management user"
+        shell=/bin/bash
+        groups=ec2-user,wheel
+        append=yes
+
+#- name: setup ssh keys for management user
+#  authorized_key: user={{ amzn_base_admin_username }}
+#                  key="{{ item }}"
+#  with_file:
+#    - public_keys/{{ amzn_base_admin_key }}
+
+- name: setup sudo for management user
+  template: src=extra-sudoers.j2
+            dest=/etc/sudoers.d/extra-sudoers
+            owner=root
+            group=root
+            mode=0440
+            validate='visudo -cf %s'
+
+- name: ensure ntp is running
+  service: name={{ amzn_base_ntp_service_name }} state=started

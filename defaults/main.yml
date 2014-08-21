@@ -1,0 +1,37 @@
+---
+amzn_base_os_family: RedHat
+amzn_base_product_version: 4.2.amazon
+
+# Amazon AMI version used
+amzn_base_lsb_id: AmazonAMI
+amzn_base_lsb_major_release: 2014
+amzn_base_lsb_relase: 2014.03
+
+amzn_base_lang: en_US.UTF-8
+amzn_base_lc_all: en_US.UTF-8
+amzn_base_lc_type: UTF-8
+
+# Packages available on default yum repo
+amzn_base_admin_packages:
+  - redhat-lsb-core
+  - epel-release
+  - traceroute
+  - sysstat
+  - dstat
+  - iotop
+  - lsof
+  - mtr
+  - ntp
+  - tmux
+  - screen
+
+# EPEL Repo instaled through epel-release package
+amzn_base_epel_packages:
+  - htop
+
+# Other packages
+amzn_base_custom_packages:
+  - vim
+  - zip
+  - curl
+  - telnet

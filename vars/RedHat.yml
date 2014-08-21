@@ -1,0 +1,3 @@
+---
+amzn_base_ntp_service_name: ntpd
+amzn_base_motd_location: /etc/motd

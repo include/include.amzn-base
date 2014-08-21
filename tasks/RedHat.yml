@@ -1,0 +1,43 @@
+---
+- name: AmazonAMI | supported OS
+  set_fact:
+    amzn_base_supported_os: True
+
+- name: setup locale
+  command: /usr/bin/localedef -i en_US -f {{ amzn_base_lc_type }} {{ amzn_base_lc_all }}
+
+- name: setup locale for all users
+  template: src=i18n.j2
+            dest=/etc/sysconfig/i18n
+
+- name: remove old timezone/localtime file
+  file: path=/etc/localtime state=absent
+
+- name: setup timezone/localtime file link
+  file: src=/usr/share/zoneinfo/{{ amzn_base_timezone }}
+        dest=/etc/localtime
+        state=link
+
+- name: setup clock
+  template: src=clock.j2
+            dest=/etc/sysconfig/clock
+
+- name: upgrade all base packages
+  yum: name=* state=latest
+
+- name: install necessary admin and custom packages
+  yum: pkg={{ item }} state=installed
+  with_items: amzn_base_admin_packages| union(amzn_base_custom_packages) | list
+
+- name: install aditional epel packages
+  yum: pkg={{ item }} enablerepo=epel state=installed
+  with_items: amzn_base_epel_packages
+
+#- name: Check what the new version is
+#  shell:  lsb_release -r | awk '{print $2}'
+#  register: new_release
+
+#- name: Reboot
+#  command: /sbin/reboot -t now
+#  when: ansible_distribution_version != new_release.stdout
+#  when: {{ amzn_base_lsb_release }} != new_release.stdout

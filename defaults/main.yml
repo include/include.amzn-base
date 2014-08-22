@@ -35,3 +35,5 @@ amzn_base_custom_packages:
   - zip
   - curl
   - telnet
+  - git
+  - python-simplejson

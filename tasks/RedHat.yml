@@ -26,16 +26,16 @@
   yum: name=* state=latest
 
 - name: install necessary admin and custom packages
-  yum: pkg={{ item }} state=installed
+  yum: pkg={{ item }} state=latest
   with_items: amzn_base_admin_packages| union(amzn_base_custom_packages) | list
 
 - name: install aditional epel packages
-  yum: pkg={{ item }} enablerepo=epel state=installed
+  yum: pkg={{ item }} enablerepo=epel state=latest
   with_items: amzn_base_epel_packages
 
-#- name: Check what the new version is
-#  shell:  lsb_release -r | awk '{print $2}'
-#  register: new_release
+- name: Check what the new version is
+  shell:  lsb_release -r | awk '{print $2}'
+  register: release_version
 
 #- name: Reboot
 #  command: /sbin/reboot -t now
